@@ -344,23 +344,7 @@ int irow, icol, frow, fcol;
 	fcol = int(toupper(move[3])-'A');
 	irow = int(move[1]-'1');
 	icol = int(toupper(move[0])-'A');
-bool obstruction = true;
-obstruction = pawn_obstruction(move);	
 
-if((board[icol][irow].has_piece_color()) == "white")
-	{
-	if((frow == irow - 1)&&(board[fcol][frow].emptiness() == true)&&(obstruction == true))
-		{return true;}
-	else
-		{return false;}	
-	}
-else
-	{
-	if((frow == irow + 1)&&(board[fcol][frow].emptiness() == true)&&(obstruction == true))
-		{return true;}
-	else
-		{return false;}
-	}
 }
 bool Chess::pawn_obstruction(const string& move)const
 {
@@ -369,22 +353,7 @@ int irow, icol, frow, fcol;
 	fcol = int(toupper(move[3])-'A');
 	irow = int(move[1]-'1');
 	icol = int(toupper(move[0])-'A');
-if(irow>frow)
-{
-	for(int i = irow;i>frow;i--)
-	{
-		if(board[fcol][i-1].has_piece_color()!="empty")
-			{return false;}
-	}
-}
-if(frow>irow)
-{
-	for(int i = irow;i<frow;i++)
-	{
-		if(board[fcol][i+1].has_piece_color()!="empty")
-			{return false;}
-	}
-}
+
 }
 
 
@@ -398,12 +367,6 @@ fcol = int(toupper(move[3])-'A');
 irow = int(move[1]-'1');
 icol = int(toupper(move[0])-'A');
 
-bool obstruction = true;
-obstruction = rook_obstruction(move);
-if((frow == irow)||(fcol == icol)&&(obstruction == true))
-	{return true;}
-else
-	{return false;}	
 	
 }
 bool Chess::rook_obstruction(const string& move)const
@@ -413,38 +376,7 @@ frow = int(move[4]-'1');
 fcol = int(toupper(move[3])-'A');
 irow = int(move[1]-'1');
 icol = int(toupper(move[0])-'A');
-if(irow>frow) //if something is obstructing the up
-{
-	for(int i = irow;i>frow+1;--i)
-	{
-		if(board[fcol][i-1].has_piece_color()!="empty")
-			{return false;}
-	}
-}
-if(frow>irow) //if something is obstructing the down
-{
-	for(int i = irow;i<frow;i++)
-	{
-		if(board[fcol][i+1].has_piece_color()!="empty")
-			{return false;}
-	}
-}
-if(icol>fcol) //if something is obstructing the left
-{
-	for(int i = icol-1;i>fcol;i--)
-	{
-		if(board[i][irow].has_piece_color()!="empty")
-			{return false;}
-	}
-}
-if(icol<fcol) //if something is obstructing the right
-{
-	for(int i = icol+1;i<fcol;i++)
-	{
-		if(board[i][irow].has_piece_color()!="empty")
-			{return false;}
-	}
-}
+
 }
 
 
@@ -458,23 +390,7 @@ fcol = int(toupper(move[3])-'A');
 irow = int(move[1]-'1');
 icol = int(toupper(move[0])-'A');
 bool legal=0, obstruction = 0;
-obstruction = bishop_obstruction(move);
 
-for(int i=0;i<8;i++)
-{
-	if((irow)==(frow-i)&&(icol)==(fcol-i)) //Checking up-left
-		{legal = 1;}
-	if((irow)==(frow+i)&&(icol)==(fcol-i)) //Checking down-left
-		{legal = 1;}
-	if((irow)==(frow-i)&&(icol)==(fcol+i)) //Checking up-right
-		{legal = 1;}
-	if((irow)==(frow+i)&&(icol)==(fcol+i)) //Checking down-right
-		{legal = 1;}
-}
-if( legal == 1 && obstruction == 1)
-	{return true;}
-
-return false;
 }
 bool Chess::bishop_obstruction(const string& move)const
 {
@@ -485,45 +401,6 @@ irow = int(move[1]-'1');
 icol = int(toupper(move[0])-'A');
 
 
-if(frow>irow)
-{
-	if(fcol>icol) //to down-right
-	{
-		for(c=icol+1, r = irow+1; c<fcol; c++, r++)
-		{
-		if(board[c][r].emptiness() == false)
-			{return false;}
-		}
-	}
-	else //to down-left
-	{
-		for(c=icol-1, r = irow+1; r<frow; c--, r++)
-		{
-		if(board[c][r].emptiness() == false)
-			{return false;}
-		}
-	}
-}
-else //frow<irow
-{
-	if(fcol>icol) //to up-right
-	{
-		for(c=icol+1, r = irow-1; c<fcol; c++, r--)
-		{
-		if(board[c][r].emptiness() == false)
-			{return false;}
-		}
-	}
-	else //to up-left
-	{
-		for(c=icol-1, r = irow-1; c>fcol; c--, r--)
-		{
-		if(board[c][r].emptiness() == false)
-			{return false;}
-		}
-	}
-}
-return true;
 }
 
 
@@ -536,29 +413,8 @@ frow = int(move[4]-'1');
 fcol = int(toupper(move[3])-'A');
 irow = int(move[1]-'1');
 icol = int(toupper(move[0])-'A');
-bool ld=0,lu=0,ul=0,ur=0,rd=0,ru=0,dl=0,dr=0;
 
-if(frow-2==irow && fcol-1==icol)
-	{ul=1;}
-if(frow-2==irow && fcol+1 ==icol)
-	{ur=1;}
-if(frow+2==irow && fcol+1 ==icol)
-	{dr=1;}
-if(frow+2==irow && fcol-1 ==icol)
-	{dl=1;}
-if(frow-1==irow && fcol-2 ==icol)
-	{lu=1;}
-if(frow+1==irow && fcol-2 ==icol)
-	{ld=1;}
-if(frow-1==irow && fcol+2 ==icol)
-	{ru=1;}
-if(frow+1==irow && fcol+2 ==icol)
-	{rd=1;}
 
-if( ld+lu+ul+ur+rd+ru+dl+dr == 1)
-	{return true;}
-else
-	{return false;}
 }
 
 
@@ -572,10 +428,6 @@ fcol = int(toupper(move[3])-'A');
 irow = int(move[1]-'1');
 icol = int(toupper(move[0])-'A');
 
-if((check_rook_legality(move)==true)||check_bishop_legality(move)==true)
-	{return true;}
-else
-	{return false;}
 }
 
 
@@ -589,10 +441,6 @@ fcol = int(toupper(move[3])-'A');
 irow = int(move[1]-'1');
 icol = int(toupper(move[0])-'A');
 
-if((irow == (frow+1||frow-1||frow))&&(icol==(fcol-1||fcol||fcol+1)))
-	{return true;}
-else
-	{return false;}
 }
 
 
