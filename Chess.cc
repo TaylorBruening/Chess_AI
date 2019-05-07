@@ -109,12 +109,15 @@ void Chess::draw_top_matrix(vector<vector<int> > &board,
 		printw(BLACK_KING);
 	  	}
 	 else {
-	//attron(COLOR_PAIR(1));
+	if(i == cur_row && j == cur_col)
+		{attron(COLOR_PAIR(3));}
+
 		printw(" ");
 	//attroff(COLOR_PAIR(1));
       	}
 	attroff(COLOR_PAIR(1));
 	attroff(COLOR_PAIR(2));
+	attroff(COLOR_PAIR(3));
     }
 	/*
     move(2*i+1,2*8);
@@ -198,6 +201,8 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
   string angle = "horizontal";
   int selected_row = 0;
   int selected_col = 0;
+  int selected_type = 1;
+  int selection_counter = 0;
 
   setlocale(LC_ALL, "");
   initscr();
@@ -208,8 +213,9 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
 
  
     start_color();
-   	init_pair(1, COLOR_BLACK, COLOR_RED);
-   	init_pair(2, COLOR_BLACK, COLOR_CYAN);
+   	init_pair(1, COLOR_WHITE, COLOR_RED);
+   	init_pair(2, COLOR_WHITE, COLOR_CYAN);
+   	init_pair(3, COLOR_WHITE, COLOR_WHITE);
     //attron(COLOR_PAIR(1));
 
 
@@ -220,8 +226,31 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
   while ((ch = getch())!='\n') {
     switch (ch) {
 	case ' ':
-		selected_row = cur_row;
-		selected_col = cur_col;
+		if(selection_counter == 0)
+			{
+			if(board[cur_col][cur_row] != 1)
+				{
+				selection_counter = 1; //a piece has been selected
+				selected_row = cur_row;
+				selected_col = cur_col;
+				selected_type = board[cur_col][cur_row];
+				}
+			}
+			
+		else
+			{
+			//if(move_piece(board, cur_row, cur_col, selection_counter) == true)
+
+			if(board[cur_col][cur_row] == 1)
+				{
+				board[selected_col][selected_row] = 1; //Set the previous location to blank
+				board[cur_col][cur_row] = selected_type; //set the new "empty location to the piece
+				selected_type = 1;
+				selection_counter = 0;
+				}
+			}
+
+		
       draw_top_matrix(board,cur_row,cur_col);
       refresh();
 
