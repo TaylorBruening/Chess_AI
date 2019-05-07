@@ -50,61 +50,73 @@ void Chess::draw_top_matrix(vector<vector<int> > &board,
 		     int cur_col) {
 
 //This section will print the "enemy board" or your board if it is during board setup func
+/*
   for (int j=0;j<8;j++) {
       move(0,2*j);
       printw("+-");
     }
     move(0,2*8);
     printw("+");
+*/
   for (int i=0;i<8;i++) {
     for (int j=0;j<8;j++) {
-      move(2*i+1,2*j);
-      printw("|");
+      //move(2*i+1,2*j);
+      //printw("|");
       move(2*i+1,2*j+1);
+	if((i%2 == 0 && j%2 != 0) || (i%2 == 1 && j%2 == 0))
+		{attron(COLOR_PAIR(1));}
+	if((i % 2 == 1 && j%2 != 0)|| (i%2 == 0 && j%2 == 0))
+		{attron(COLOR_PAIR(2));}
+
       if (board[i][j] == 0) {
-	printw(" ");
-      }
+		printw(" ");
+      	}
 	  else if(board[j][i] == 10) {
-	printw(WHITE_PAWN);
-	  }
+		printw(WHITE_PAWN);
+	  	}
 	  else if(board[j][i] == 11) {
-	printw(WHITE_KNIGHT);
-	  }
+		printw(WHITE_KNIGHT);
+	  	}
 	  else if(board[j][i] == 12) {
-	printw(WHITE_BISHOP);
-	  }
+		printw(WHITE_BISHOP);
+	  	}
 	  else if(board[j][i] == 13) {
-	printw(WHITE_ROOK);
-	  }
+		printw(WHITE_ROOK);
+	  	}
 	  else if(board[j][i] == 14) {
-	printw(WHITE_QUEEN);
-	  }
+		printw(WHITE_QUEEN);
+	  	}
 	  else if(board[j][i] == 15) {
-	printw(WHITE_KING);
-	  }
+		printw(WHITE_KING);
+	  	}
 
 	  else if(board[j][i] == 20) {
-	printw(BLACK_PAWN);
-	  }
+		printw(BLACK_PAWN);
+	  	}
 	  else if(board[j][i] == 21) {
-	printw(BLACK_KNIGHT);
-	  }
+		printw(BLACK_KNIGHT);
+	  	}
 	  else if(board[j][i] == 22) {
 	printw(BLACK_BISHOP);
 	  }
 	  else if(board[j][i] == 23) {
-	printw(BLACK_ROOK);
-	  }
+		printw(BLACK_ROOK);
+	  	}
 	  else if(board[j][i] == 24) {
-	printw(BLACK_QUEEN);
-	  }
+		printw(BLACK_QUEEN);
+	  	}
 	  else if(board[j][i] == 25) {
-	printw(BLACK_KING);
-	  }
+		printw(BLACK_KING);
+	  	}
 	 else {
-	printw(" ");
-      }
+	//attron(COLOR_PAIR(1));
+		printw(" ");
+	//attroff(COLOR_PAIR(1));
+      	}
+	attroff(COLOR_PAIR(1));
+	attroff(COLOR_PAIR(2));
     }
+	/*
     move(2*i+1,2*8);
     printw("|");
     for (int j=0;j<8;j++) {
@@ -113,6 +125,7 @@ void Chess::draw_top_matrix(vector<vector<int> > &board,
     }
     move(2*i+2,2*8);
     printw("+");
+	*/
   }
 
   move(2*cur_row+1,2*cur_col+1);
@@ -162,8 +175,14 @@ for(int c = 0;c<8;c++)
 board = setup(board);
 return board;
 }
+//***************************************************************
+// Function:  board_setup
+// Returns: board
+// Purpose:  set up/position your battleship
+//****************************************************************
+void move_piece(vector<vector<int> >& board) {
 
-
+}
 
 //***************************************************************
 // Function:  board_setup
@@ -177,6 +196,8 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
   int cur_col=3;
   int ch;
   string angle = "horizontal";
+  int selected_row = 0;
+  int selected_col = 0;
 
   setlocale(LC_ALL, "");
   initscr();
@@ -186,8 +207,9 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
   keypad(stdscr, TRUE);
 
  
-    //start_color();
-   // init_pair(1, COLOR_BLACK, COLOR_RED);
+    start_color();
+   	init_pair(1, COLOR_BLACK, COLOR_RED);
+   	init_pair(2, COLOR_BLACK, COLOR_CYAN);
     //attron(COLOR_PAIR(1));
 
 
@@ -197,29 +219,45 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
   
   while ((ch = getch())!='\n') {
     switch (ch) {
+	case ' ':
+		selected_row = cur_row;
+		selected_col = cur_col;
+      draw_top_matrix(board,cur_row,cur_col);
+      refresh();
+
+      break;
+
     case KEY_RIGHT:
 	  //if((cur_col+1 < 3) || ((cur_col < 3) && angle == "vertical"))
 	 	 //{move_piece(board, "right", cur_col);}
-
-      draw_top_matrix(board, cur_row, cur_col);
+      cur_col++;
+      cur_col%=8;
+      draw_top_matrix(board,cur_row,cur_col);
       // Redraw the screen.
       refresh();
       break;
     case KEY_LEFT:
-      draw_top_matrix(board, cur_row, cur_col);
-
+      cur_col--;
+      cur_col = (8+cur_col)%8;
+      draw_top_matrix(board,cur_row,cur_col);
+      // Redraw the screen.
       refresh();
       break;
-    case KEY_UP: 
-      draw_top_matrix(board, cur_row, cur_col);
+    case KEY_UP:
+      cur_row--;
+      cur_row=(8+cur_row) % 8;
+      draw_top_matrix(board,cur_row,cur_col);
+      
+      //      paint_markers(rows,cols,10,cur_row,cur_col);
+      // Redraw the screen.
       refresh();
       break;
     case KEY_DOWN:
-      draw_top_matrix(board, cur_row, cur_col); 
-      refresh();
-      break;
-    default: //This default condition prevents from entering in unwanted characters
-      draw_top_matrix(board, cur_row, cur_col);
+      cur_row++;
+      cur_row%=8;
+      draw_top_matrix(board,cur_row,cur_col);
+            //paint_markers(rows,cols,10,cur_row,cur_col);
+      // Redraw the screen.
       refresh();
       break;
     }
