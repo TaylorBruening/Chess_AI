@@ -3,13 +3,13 @@
 all: Chess clean
 
 Chess: Chess.o main.o
-	g++ -o Chess Chess.o main.o -lncursesw
+	g++ -std=c++11 -o Chess Chess.o main.o -lncursesw
 
 Chess.o: Chess.h Chess.cc
-	g++ -c Chess.cc -lncursesw
+	g++ -std=c++11 -c Chess.cc -lncursesw
 
 main.o: main.cc
-	g++ -c main.cc
+	g++ -std=c++11 -c main.cc
 
 clean :
 	rm -f *.o a.out

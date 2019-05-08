@@ -185,7 +185,7 @@ return board;
 //****************************************************************
 bool move_piece(vector<vector<int> >& board, int cur_row, int cur_col, int selected_row, int selected_col, int selected_type) {
 
-if(selected_type == 13 || 23) //Rules for Rook piece
+if(selected_type == (13 || 23)) //Rules for Rook piece
 	{
 	if((cur_row == selected_row) || (cur_col == selected_col))
 		{return true;}
@@ -201,14 +201,14 @@ else if(selected_type == 14 || 24) //queen
 else if(selected_type == 15 || 25) //king
 	{return true;}
 else if(selected_type == 10) //Rules for white pawns
-	{
+	//{
 	
-	if((cur_row < selected_row) && (selected_row-cur_row <= 2))
+	//if((cur_row < selected_row) && (selected_row-cur_row <= 2))
 		{return true;}
-	else
-		{return false;}
+	//else
+		//{return false;}
 	
-	}
+	//}
 else if(selected_type == 20) //Rules for black pawns
 	{
 	/*
@@ -244,6 +244,7 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
   int selected_col = 0;
   int selected_type = 1;
   int selection_counter = 0;
+	char buf[33];
 
   setlocale(LC_ALL, "");
   initscr();
@@ -269,12 +270,15 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
 	case ' ':
 		if(selection_counter == 0)
 			{
-			if((board[cur_row][cur_col] != 1) || (board[cur_row][cur_col] != 0))
+			if((board[cur_row][cur_col] != 1) && (board[cur_row][cur_col] != 0))
 				{
 				selection_counter = 1; //a piece has been selected
 				selected_row = cur_row;
 				selected_col = cur_col;
 				selected_type = board[cur_row][cur_col];
+				//string character = to_string(selected_type);
+
+				mvaddch(4, 4, selected_type); 
 				board[cur_row][cur_col] = 1;
 				}
 			
