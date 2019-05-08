@@ -183,9 +183,35 @@ return board;
 // Returns: board
 // Purpose:  set up/position your battleship
 //****************************************************************
-void move_piece(vector<vector<int> >& board) {
+bool move_piece(vector<vector<int> >& board, int cur_row, int cur_col, int selected_row, int selected_col, int selected_type) {
+
+if(selected_type == 13 || 23) //rook
+	{
+	if((cur_row == selected_row) || (cur_col == selected_col))
+		{return true;}
+	else
+		{return false;}
+	}
+else if(selected_type == 11 || 21) //knight
+	{return true;}
+else if(selected_type == 12 || 22) //bishop
+	{return true;}
+else if(selected_type == 14 || 24) //queen
+	{return true;}
+else if(selected_type == 15 || 25) //king
+	{return true;}
+else if(selected_type == 10) //pawn are separated because pawns have to go in a direction per color
+	{return true;}
+else if(selected_type == 20) //pawn
+	{return true;}
+else
+	{return true;}
 
 }
+
+
+
+
 
 //***************************************************************
 // Function:  board_setup
@@ -228,7 +254,7 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
 	case ' ':
 		if(selection_counter == 0)
 			{
-			if(board[cur_col][cur_row] != 1)
+			if((board[cur_col][cur_row] != 1) || (board[cur_row][cur_col] != 0))
 				{
 				selection_counter = 1; //a piece has been selected
 				selected_row = cur_row;
@@ -239,18 +265,18 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
 			
 		else
 			{
-			//if(move_piece(board, cur_row, cur_col, selection_counter) == true)
-
+			//
 			if(board[cur_col][cur_row] == 1)
 				{
-				board[selected_col][selected_row] = 1; //Set the previous location to blank
-				board[cur_col][cur_row] = selected_type; //set the new "empty location to the piece
-				selected_type = 1;
-				selection_counter = 0;
+				if(move_piece(board, cur_row, cur_col, selected_row, selected_col, selection_counter) == true)
+					{
+					board[selected_col][selected_row] = 1; //Set the previous location to blank
+					board[cur_col][cur_row] = selected_type; //set the new "empty location to the piece
+					selected_type = 1;
+					selection_counter = 0;
+					}
 				}
 			}
-
-		
       draw_top_matrix(board,cur_row,cur_col);
       refresh();
 
