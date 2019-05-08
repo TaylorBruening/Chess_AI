@@ -26,19 +26,19 @@ if(piece_type == "king")
 #include <locale.h>
 using namespace std;
 
-#define WHITE_PAWN "\u2659" //10
-#define WHITE_KNIGHT "\u2658" //11
-#define WHITE_BISHOP "\u2657" //12
-#define WHITE_ROOK "\u2656" //13
-#define WHITE_QUEEN "\u2655" //14
-#define WHITE_KING "\u2654" //15
+#define BLACK_PAWN "\u2659" //10
+#define BLACK_KNIGHT "\u2658" //11
+#define BLACK_BISHOP "\u2657" //12
+#define BLACK_ROOK "\u2656" //13
+#define BLACK_QUEEN "\u2655" //14
+#define BLACK_KING "\u2654" //15
 
-#define BLACK_PAWN "\u265F" //20
-#define BLACK_KNIGHT "\u265E" //21
-#define BLACK_BISHOP "\u265D" //22
-#define BLACK_ROOK "\u265C" //23
-#define BLACK_QUEEN "\u265B" //24
-#define BLACK_KING "\u265A" //25
+#define WHITE_PAWN "\u265F" //20
+#define WHITE_KNIGHT "\u265E" //21
+#define WHITE_BISHOP "\u265D" //22
+#define WHITE_ROOK "\u265C" //23
+#define WHITE_QUEEN "\u265B" //24
+#define WHITE_KING "\u265A" //25
 
 //***************************************************************
 // Function:  draw_top_matrix
@@ -71,41 +71,41 @@ void Chess::draw_top_matrix(vector<vector<int> > &board,
       if (board[i][j] == 0) {
 		printw(" ");
       	}
-	  else if(board[j][i] == 10) {
+	  else if(board[i][j] == 10) {
 		printw(WHITE_PAWN);
 	  	}
-	  else if(board[j][i] == 11) {
+	  else if(board[i][j] == 11) {
 		printw(WHITE_KNIGHT);
 	  	}
-	  else if(board[j][i] == 12) {
+	  else if(board[i][j] == 12) {
 		printw(WHITE_BISHOP);
 	  	}
-	  else if(board[j][i] == 13) {
+	  else if(board[i][j] == 13) {
 		printw(WHITE_ROOK);
 	  	}
-	  else if(board[j][i] == 14) {
+	  else if(board[i][j] == 14) {
 		printw(WHITE_QUEEN);
 	  	}
-	  else if(board[j][i] == 15) {
+	  else if(board[i][j] == 15) {
 		printw(WHITE_KING);
 	  	}
 
-	  else if(board[j][i] == 20) {
+	  else if(board[i][j] == 20) {
 		printw(BLACK_PAWN);
 	  	}
-	  else if(board[j][i] == 21) {
+	  else if(board[i][j] == 21) {
 		printw(BLACK_KNIGHT);
 	  	}
-	  else if(board[j][i] == 22) {
+	  else if(board[i][j] == 22) {
 	printw(BLACK_BISHOP);
 	  }
-	  else if(board[j][i] == 23) {
+	  else if(board[i][j] == 23) {
 		printw(BLACK_ROOK);
 	  	}
-	  else if(board[j][i] == 24) {
+	  else if(board[i][j] == 24) {
 		printw(BLACK_QUEEN);
 	  	}
-	  else if(board[j][i] == 25) {
+	  else if(board[i][j] == 25) {
 		printw(BLACK_KING);
 	  	}
 	 else {
@@ -147,31 +147,31 @@ vector<vector<int> > Chess::board_setup() {
     board.push_back(t);
   }
 
-board[0][7] = 13; //set white rook
-board[1][7] = 11; //set white knight
-board[2][7] = 12; //set white bishop
-board[3][7] = 14; //set white queen
-board[4][7] = 15; //set white king
-board[5][7] = 12; //set white bishop
-board[6][7] = 11; //set white knight
+board[7][0] = 13; //set white rook
+board[7][1] = 11; //set white knight
+board[7][2] = 12; //set white bishop
+board[7][3] = 14; //set white queen
+board[7][4] = 15; //set white king
+board[7][5] = 12; //set white bishop
+board[7][6] = 11; //set white knight
 board[7][7] = 13; //set white rook
 
 //set white pawns
 for(int c = 0;c<8;c++)
-	{board[c][6] = 10;}
+	{board[6][c] = 10;}
 
 
 board[0][0] = 23; //set black rook
-board[1][0] = 21; //set black knight
-board[2][0] = 22; //set black bishop
-board[3][0] = 24; //set black queen
-board[4][0] = 25; //set black king
-board[5][0] = 22; //set black bishop
-board[6][0] = 21; //set black knight
-board[7][0] = 23; //set black rook
+board[0][1] = 21; //set black knight
+board[0][2] = 22; //set black bishop
+board[0][3] = 24; //set black queen
+board[0][4] = 25; //set black king
+board[0][5] = 22; //set black bishop
+board[0][6] = 21; //set black knight
+board[0][7] = 23; //set black rook
 	//set black pawns
 for(int c = 0;c<8;c++)
-	{board[c][1] = 20;}
+	{board[1][c] = 20;}
 
 
 
@@ -185,7 +185,7 @@ return board;
 //****************************************************************
 bool move_piece(vector<vector<int> >& board, int cur_row, int cur_col, int selected_row, int selected_col, int selected_type) {
 
-if(selected_type == 13 || 23) //rook
+if(selected_type == 13 || 23) //Rules for Rook piece
 	{
 	if((cur_row == selected_row) || (cur_col == selected_col))
 		{return true;}
@@ -200,10 +200,25 @@ else if(selected_type == 14 || 24) //queen
 	{return true;}
 else if(selected_type == 15 || 25) //king
 	{return true;}
-else if(selected_type == 10) //pawn are separated because pawns have to go in a direction per color
-	{return true;}
-else if(selected_type == 20) //pawn
-	{return true;}
+else if(selected_type == 10) //Rules for white pawns
+	{
+	
+	if((cur_row < selected_row) && (selected_row-cur_row <= 2))
+		{return true;}
+	else
+		{return false;}
+	
+	}
+else if(selected_type == 20) //Rules for black pawns
+	{
+	/*
+	if(selected_col < cur_col)// && (cur_col == selected_col))
+		{return true;}
+	else
+		{return false;}
+	*/
+	return true;
+	}
 else
 	{return true;}
 
@@ -254,29 +269,33 @@ vector<vector<int> > Chess::setup(vector<vector<int> >& board) {
 	case ' ':
 		if(selection_counter == 0)
 			{
-			if((board[cur_col][cur_row] != 1) || (board[cur_row][cur_col] != 0))
+			if((board[cur_row][cur_col] != 1) || (board[cur_row][cur_col] != 0))
 				{
 				selection_counter = 1; //a piece has been selected
 				selected_row = cur_row;
 				selected_col = cur_col;
-				selected_type = board[cur_col][cur_row];
+				selected_type = board[cur_row][cur_col];
+				board[cur_row][cur_col] = 1;
 				}
+			
 			}
 			
-		else
+		else if(selection_counter == 1)
 			{
-			//
-			if(board[cur_col][cur_row] == 1)
+			if((board[cur_row][cur_col] == 1) || (board[cur_row][cur_col] == 0))
 				{
 				if(move_piece(board, cur_row, cur_col, selected_row, selected_col, selection_counter) == true)
 					{
-					board[selected_col][selected_row] = 1; //Set the previous location to blank
-					board[cur_col][cur_row] = selected_type; //set the new "empty location to the piece
+					board[selected_row][selected_col] = 1; //Set the previous location to blank
+					board[cur_row][cur_col] = selected_type; //set the new "empty location to the piece
 					selected_type = 1;
 					selection_counter = 0;
+					selected_col = 0;
+					selected_row = 0;
 					}
 				}
 			}
+
       draw_top_matrix(board,cur_row,cur_col);
       refresh();
 
